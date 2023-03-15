@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { youTubeVideoUrl } from '../helper/Constant'
+import  youTubeVideoUrl  from '../config/Constant'
 import Shimmer from './Shimmer'
 import Sidebar from './Sidebar'
 import Topmenu from './Topmenu'
@@ -21,16 +21,16 @@ const Dashboard = () => {
     const arr = [1, 2, 3, 4, 5];
     useEffect(() => {
 
-        getYoutubeVideo();
+        // getYoutubeVideo();
         setProgress(15);
 
-        // setVideos(data.items);
-        // setNextPageToken(data?.nextPageToken);
-        // setPrevPageToken(data?.prevPageToken);
-        // setResultsPerPage(data?.pageInfo?.resultsPerPage);
-        // setTotalResults(data?.pageInfo?.totalResults);
-        // setRemainingResult(data?.pageInfo?.totalResults - data?.pageInfo?.resultsPerPage);
-        
+        setVideos(data.items);
+        setNextPageToken(data?.nextPageToken);
+        setPrevPageToken(data?.prevPageToken);
+        setResultsPerPage(data?.pageInfo?.resultsPerPage);
+        setTotalResults(data?.pageInfo?.totalResults);
+        setRemainingResult(data?.pageInfo?.totalResults - data?.pageInfo?.resultsPerPage);
+        setProgress(100);
 
     }, [])
 
@@ -59,18 +59,27 @@ const Dashboard = () => {
     const fetchData = async () => {
         setProgress(15);
         console.log('fetchData worked');
-        const apicall = await fetch(youTubeVideoUrl);
-        const result = await apicall.json();
+        // const apicall = await fetch(youTubeVideoUrl);
+        // const result = await apicall.json();
+        // setProgress(100);
+        // console.log('result', result);
+        // setVideos(videos.concat(result.items));
+        
+        
+        // setNextPageToken(result?.nextPageToken);
+        // setPrevPageToken(result?.prevPageToken);
+        // setTotalResults(result?.pageInfo?.totalResults);
+        // setResultsPerPage(result?.pageInfo?.resultsPerPage);
+        // setRemainingResult(result?.pageInfo?.totalResults - result?.pageInfo?.resultsPerPage);
+
+
+        setVideos(videos.concat(data.items));
+        setNextPageToken(data?.nextPageToken);
+        setPrevPageToken(data?.prevPageToken);
+        setResultsPerPage(data?.pageInfo?.resultsPerPage);
+        setTotalResults(data?.pageInfo?.totalResults);
+        setRemainingResult(data?.pageInfo?.totalResults - data?.pageInfo?.resultsPerPage);
         setProgress(100);
-        console.log('result', result);
-        setVideos(videos.concat(result.items));
-        
-        
-        setNextPageToken(result?.nextPageToken);
-        setPrevPageToken(result?.prevPageToken);
-        setTotalResults(result?.pageInfo?.totalResults);
-        setResultsPerPage(result?.pageInfo?.resultsPerPage);
-        setRemainingResult(result?.pageInfo?.totalResults - result?.pageInfo?.resultsPerPage);
     }
 
     return (!videos) ? <Shimmer /> : (
@@ -89,7 +98,7 @@ const Dashboard = () => {
                     <div className='flex fixed w-full'>
                         <Topmenu />
                     </div>
-                    <div id="scrollableDiv" className='mt-16 h-[600px] overflow-y-auto p-2 flex flex-wrap'>
+                    <div id="scrollableDiv" className='mt-16 h-[600px] flex-1 overflow-y-auto p-2 flex flex-wrap'>
 
                         <InfiniteScroll
                         className='flex flex-wrap'
@@ -97,14 +106,8 @@ const Dashboard = () => {
                             next={fetchData}
                             pullDownToRefreshThreshold={50}
                             scrollableTarget="scrollableDiv"
-                            hasMore={true}
+                            hasMore={(videos.length <= totalResults) ? true : false}
                             loader={<h4>Loading...</h4>}
-
-                            endMessage={
-                                <p style={{ textAlign: 'center' }}>
-                                    <b>Yay! You have seen it all</b>
-                                </p>
-                            }
                         >
 
                             {videos && videos?.map((items, i) => <Videocard key={`test_${i}`} data={items} />)}
