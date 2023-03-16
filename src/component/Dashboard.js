@@ -7,6 +7,7 @@ import Videocard from './Videocard'
 import LoadingBar from 'react-top-loading-bar'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import data from '../data/DummyData.json'
+import Spinner from './Spinner'
 
 const Dashboard = () => {
 
@@ -73,13 +74,19 @@ const Dashboard = () => {
         // setRemainingResult(result?.pageInfo?.totalResults - result?.pageInfo?.resultsPerPage);
 
 
-        setVideos(videos.concat(data.items));
-        setNextPageToken(data?.nextPageToken);
-        setPrevPageToken(data?.prevPageToken);
-        setResultsPerPage(data?.pageInfo?.resultsPerPage);
-        setTotalResults(data?.pageInfo?.totalResults);
-        setRemainingResult(data?.pageInfo?.totalResults - data?.pageInfo?.resultsPerPage);
-        setProgress(100);
+       const timeOut = setTimeout(() => {
+            setVideos(videos.concat(data.items));
+            setNextPageToken(data?.nextPageToken);
+            setPrevPageToken(data?.prevPageToken);
+            setResultsPerPage(data?.pageInfo?.resultsPerPage);
+            setTotalResults(data?.pageInfo?.totalResults);
+            setRemainingResult(data?.pageInfo?.totalResults - data?.pageInfo?.resultsPerPage);
+            setProgress(100);
+        }, 1000);
+
+        () => {
+            return clearTimeout(timeOut);
+        }
     }
 
     return (!videos) ? <Shimmer /> : (
@@ -106,8 +113,9 @@ const Dashboard = () => {
                             next={fetchData}
                             pullDownToRefreshThreshold={50}
                             scrollableTarget="scrollableDiv"
-                            hasMore={(videos.length <= totalResults) ? true : false}
-                            loader={<h4>Loading...</h4>}
+                            // hasMore={(videos.length <= totalResults) ? true : false}
+                            hasMore={true}
+                            loader={<Spinner/>}
                         >
 
                             {videos && videos?.map((items, i) => <Videocard key={`test_${i}`} data={items} />)}
