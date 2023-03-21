@@ -5,4 +5,8 @@ const youTubeVideoUrl = "https://youtube.googleapis.com/youtube/v3/videos?part=s
 
 export const searchURL = 'http://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=';
 
+export const videoDetailsURL = "https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&key="+API+"&id=";
+
+export const channelDetailsURL = "https://youtube.googleapis.com/youtube/v3/channels?part=snippet%2CcontentDetails%2Cstatistics&key="+API+"&id=";
+
 export default youTubeVideoUrl;

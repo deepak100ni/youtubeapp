@@ -1,10 +1,10 @@
-import React from 'react'
+import { Link } from 'react-router-dom'
 
 const Videocard = ({data}) => {
     return (
         <div className='w-64 m-3 p-6' key={data?.snippet?.thumbnails?.medium.url}>
             <div className="h-44">
-                <img className='border rounded-lg' src={data?.snippet?.thumbnails?.medium.url} />
+                <Link to={`watch?v=`+data?.id}><img className='border rounded-lg' src={data?.snippet?.thumbnails?.medium.url} /></Link>
                 <div className="flex flex-row p-1 m-2">
                     <div className='basis-1/4'>
                         <img src={data?.snippet?.thumbnails?.medium.url} className='h-8 w-8 rounded-full' />
